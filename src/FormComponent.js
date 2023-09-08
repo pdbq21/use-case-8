@@ -1,17 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateForm, setErrors } from './actions';
+import { setErrors, submitForm } from './actions';
 import { useValidation } from './hooks';
 
+const initialFormState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  message: '',
+};
+
 const FormComponent = () => {
-  const formData = useSelector(state => state.formData);
+  const [formData, setFormData] = useState(initialFormState);
+
   const errors = useSelector(state => state.errors);
   const dispatch = useDispatch();
   const { validateInput, validateForm } = useValidation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    dispatch(updateForm(name, value));
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   }
 
   const handleBlur = (e) => {
@@ -36,6 +47,8 @@ const FormComponent = () => {
 
     if (Object.keys(formErrors).length === 0) {
       console.log("Form data submitted:", formData);
+      dispatch(submitForm(formData));
+      setFormData(initialFormState);
     }
   }
 
