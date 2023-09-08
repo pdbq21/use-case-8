@@ -55,8 +55,9 @@ const FormComponent = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>First Name:</label>
+        <label htmlFor="firstName">First Name:</label>
         <input
+          id="firstName"
           type="text"
           name="firstName"
           value={formData.firstName}
@@ -68,8 +69,9 @@ const FormComponent = () => {
       </div>
 
       <div>
-        <label>Last Name:</label>
+        <label htmlFor="lastName">Last Name:</label>
         <input
+          id="lastName"
           type="text"
           name="lastName"
           value={formData.lastName}
@@ -81,8 +83,9 @@ const FormComponent = () => {
       </div>
 
       <div>
-        <label>Email:</label>
+        <label htmlFor="email">Email:</label>
         <input
+          id="email"
           type="email"
           name="email"
           value={formData.email}
@@ -94,8 +97,9 @@ const FormComponent = () => {
       </div>
 
       <div>
-        <label>Message:</label>
+        <label htmlFor="message">Message:</label>
         <textarea
+          id="message"
           name="message"
           value={formData.message}
           onChange={handleChange}

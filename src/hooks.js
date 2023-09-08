@@ -1,4 +1,12 @@
-// useValidation.js
+import validator from 'validator';
+
+export const ERROR_EMAIL_INVALID = 'Email format is invalid.'
+export const ERROR_MESSAGE_EMPTY = "Message is required.";
+export const ERROR_MESSAGE_INVALID = "Message should be between 10 to 500 characters.";
+export const ERROR_FIRSTNAME_EMPTY = 'First name is required.'
+export const ERROR_LASTNAME_EMPTY = 'Last name is required.'
+export const ERROR_FIRSTNAME_INVALID = 'First name can only contain letters, hyphens, apostrophes, and spaces.'
+export const ERROR_LASTNAME_INVALID = 'Last name can only contain letters, hyphens, apostrophes, and spaces.'
 
 export function useValidation() {
   const validateInput = (name, value) => {
@@ -7,31 +15,24 @@ export function useValidation() {
     switch (name) {
       case 'firstName':
       case 'lastName':
-        if (!value) {
-          errors[name] = `${name === 'firstName' ? 'First' : 'Last'} name is required.`;
-        } else if (!/^[a-zA-Z-' ]+$/.test(value)) {
-          errors[name] = `${name === 'firstName' ? 'First' : 'Last'} name can only contain letters, hyphens, apostrophes, and spaces.`;
-        } else if (value.length < 2 || value.length > 50) {
-          errors[name] = `${name === 'firstName' ? 'First' : 'Last'} name should be between 2 to 50 characters.`;
+        if (validator.isEmpty(value)) {
+          errors[name] = name === 'firstName' ? ERROR_FIRSTNAME_EMPTY : ERROR_LASTNAME_EMPTY;
+        } else if (!validator.isAlpha(value.replace(/[-\s']/g, ''), 'en-US')) {
+          errors[name] = name === 'firstName' ? ERROR_FIRSTNAME_INVALID : ERROR_LASTNAME_INVALID;
         }
         break;
 
       case 'email':
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        if (!value) {
-          errors.email = "Email is required.";
-        } else if (!emailRegex.test(value)) {
-          errors.email = "Email format is invalid.";
-        } else if (value.length < 5 || value.length > 100) {
-          errors.email = "Email should be between 5 to 100 characters.";
+        if (!validator.isEmail(value)) {
+          errors.email = ERROR_EMAIL_INVALID;
         }
         break;
 
       case 'message':
-        if (!value) {
-          errors.message = "Message is required.";
-        } else if (value.length < 10 || value.length > 500) {
-          errors.message = "Message should be between 10 to 500 characters.";
+        if (validator.isEmpty(value)) {
+          errors.message = ERROR_MESSAGE_EMPTY;
+        } else if (!validator.isLength(value, { min: 10, max: 500 })) {
+          errors.message = ERROR_MESSAGE_INVALID;
         }
         break;
 
