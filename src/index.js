@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import store from './store';
 import './index.css';
-import Form from './Form';
+import FormComponent from './FormComponent';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Form />
+      <FormComponent />
     </Provider>
   </React.StrictMode>
 );
