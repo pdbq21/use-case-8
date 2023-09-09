@@ -1,6 +1,7 @@
 import {render, screen, fireEvent, cleanup} from '@testing-library/react';
+import {createStore} from 'redux';
 import {Provider} from 'react-redux';
-import store from './store';
+import rootReducer from './reducers';
 import FormComponent from './FormComponent';
 import {
   ERROR_EMAIL_INVALID,
@@ -21,6 +22,7 @@ describe('<FormComponent />', () => {
   };
 
   let renderedComponent;
+  let store;
   const fillOutForm = (data) => {
     fireEvent.change(screen.getByRole('textbox', {name: /First Name:/i}), {target: {value: data.firstName}});
     fireEvent.change(screen.getByRole('textbox', {name: /Last Name:/i}), {target: {value: data.lastName}});
@@ -29,6 +31,7 @@ describe('<FormComponent />', () => {
   };
 
   beforeEach(() => {
+    store = createStore(rootReducer); // Create a new store for each test
     renderedComponent = render(
       <Provider store={store}>
         <FormComponent/>
@@ -38,6 +41,7 @@ describe('<FormComponent />', () => {
 
   afterEach(() => {
     cleanup();
+    store = null;
     renderedComponent = null;
   });
 
